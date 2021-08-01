@@ -8,11 +8,11 @@ import (
 )
 
 // Handler replaces swagger handler
-type Handler *operations.UASVCAPI
+type Handler *operations.SuaveAPI
 
 // NewHandler overrides swagger api handlers
 func NewHandler(rt *runtime.Runtime, spec *loads.Document) Handler {
-	handler := operations.NewUASVCAPI(spec)
+	handler := operations.NewSuaveAPI(spec)
 
 	// user handlers
 	handler.AddUsernameHandler = NewAddUsername(rt)

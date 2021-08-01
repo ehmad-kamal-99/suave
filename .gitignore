@@ -15,6 +15,7 @@
 vendor/
 .idea/
 
-# Other directories
+# Other file / directories
 tmp/
 bin/
+seed.txt

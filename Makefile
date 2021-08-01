@@ -62,3 +62,6 @@ build:
 
 db_start: db_stop
 	@docker run -p 6379:6379 --name suave-db -d redislabs/rebloom:latest
+
+seed: db_start
+	bash ./scripts/seed.sh

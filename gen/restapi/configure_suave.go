@@ -13,13 +13,13 @@ import (
 	"github.com/ehmad-kamal-99/suave/gen/restapi/operations"
 )
 
-//go:generate swagger generate server --target ../../gen --name UASVC --spec ../../swagger.yaml --principal interface{} --exclude-main
+//go:generate swagger generate server --target ../../gen --name Suave --spec ../../swagger.yaml --principal interface{} --exclude-main
 
-func configureFlags(api *operations.UASVCAPI) {
+func configureFlags(api *operations.SuaveAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
 }
 
-func configureAPI(api *operations.UASVCAPI) http.Handler {
+func configureAPI(api *operations.SuaveAPI) http.Handler {
 	// configure the api here
 	api.ServeError = errors.ServeError
 

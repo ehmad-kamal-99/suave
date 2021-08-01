@@ -29,7 +29,7 @@ func init() {
   ],
   "swagger": "2.0",
   "info": {
-    "title": "UA-SVC",
+    "title": "Suave",
     "version": "1.0.0"
   },
   "host": "localhost:8080",
@@ -171,7 +171,7 @@ func init() {
   ],
   "swagger": "2.0",
   "info": {
-    "title": "UA-SVC",
+    "title": "Suave",
     "version": "1.0.0"
   },
   "host": "localhost:8080",

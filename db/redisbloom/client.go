@@ -42,6 +42,16 @@ func (c *client) AddUsername(username string) error {
 	return nil
 }
 
+// AddUsernames - add multiple usernames into database.
+func (c *client) AddUsernames(usernames []string) error {
+	if _, err := c.cli.BfAddMulti(viper.GetString(config.DBFilterName), usernames); err != nil {
+		log().Errorf("failed to add multiple usernames, err: %+v", err)
+		return errors.Wrap(err, "failed to add multiple usernames in database")
+	}
+
+	return nil
+}
+
 // CheckUsername - checks username in database.
 func (c *client) CheckUsername(username string) (bool, error) {
 	exists, err := c.cli.Exists(viper.GetString(config.DBFilterName), username)

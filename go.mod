@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	github.com/RedisBloom/redisbloom-go v1.0.0
+	github.com/brianvoe/gofakeit/v6 v6.5.0
 	github.com/go-openapi/errors v0.20.0
 	github.com/go-openapi/loads v0.20.2
 	github.com/go-openapi/runtime v0.19.29

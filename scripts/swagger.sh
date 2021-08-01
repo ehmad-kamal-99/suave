@@ -4,4 +4,4 @@ if [ ! -d "gen" ]; then
   mkdir gen gen/models gen/restapi
 fi
 
-swagger generate server -t gen --exclude-main -A UA-SVC
+swagger generate server -t gen --exclude-main -A Suave

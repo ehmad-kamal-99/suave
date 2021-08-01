@@ -20,9 +20,9 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewUASVCAPI creates a new UASVC instance
-func NewUASVCAPI(spec *loads.Document) *UASVCAPI {
-	return &UASVCAPI{
+// NewSuaveAPI creates a new Suave instance
+func NewSuaveAPI(spec *loads.Document) *SuaveAPI {
+	return &SuaveAPI{
 		handlers:            make(map[string]map[string]http.Handler),
 		formats:             strfmt.Default,
 		defaultConsumes:     "application/json",
@@ -54,8 +54,8 @@ func NewUASVCAPI(spec *loads.Document) *UASVCAPI {
 	}
 }
 
-/*UASVCAPI the u a s v c API */
-type UASVCAPI struct {
+/*SuaveAPI the suave API */
+type SuaveAPI struct {
 	spec            *loads.Document
 	context         *middleware.Context
 	handlers        map[string]map[string]http.Handler
@@ -114,52 +114,52 @@ type UASVCAPI struct {
 }
 
 // UseRedoc for documentation at /docs
-func (o *UASVCAPI) UseRedoc() {
+func (o *SuaveAPI) UseRedoc() {
 	o.useSwaggerUI = false
 }
 
 // UseSwaggerUI for documentation at /docs
-func (o *UASVCAPI) UseSwaggerUI() {
+func (o *SuaveAPI) UseSwaggerUI() {
 	o.useSwaggerUI = true
 }
 
 // SetDefaultProduces sets the default produces media type
-func (o *UASVCAPI) SetDefaultProduces(mediaType string) {
+func (o *SuaveAPI) SetDefaultProduces(mediaType string) {
 	o.defaultProduces = mediaType
 }
 
 // SetDefaultConsumes returns the default consumes media type
-func (o *UASVCAPI) SetDefaultConsumes(mediaType string) {
+func (o *SuaveAPI) SetDefaultConsumes(mediaType string) {
 	o.defaultConsumes = mediaType
 }
 
 // SetSpec sets a spec that will be served for the clients.
-func (o *UASVCAPI) SetSpec(spec *loads.Document) {
+func (o *SuaveAPI) SetSpec(spec *loads.Document) {
 	o.spec = spec
 }
 
 // DefaultProduces returns the default produces media type
-func (o *UASVCAPI) DefaultProduces() string {
+func (o *SuaveAPI) DefaultProduces() string {
 	return o.defaultProduces
 }
 
 // DefaultConsumes returns the default consumes media type
-func (o *UASVCAPI) DefaultConsumes() string {
+func (o *SuaveAPI) DefaultConsumes() string {
 	return o.defaultConsumes
 }
 
 // Formats returns the registered string formats
-func (o *UASVCAPI) Formats() strfmt.Registry {
+func (o *SuaveAPI) Formats() strfmt.Registry {
 	return o.formats
 }
 
 // RegisterFormat registers a custom format validator
-func (o *UASVCAPI) RegisterFormat(name string, format strfmt.Format, validator strfmt.Validator) {
+func (o *SuaveAPI) RegisterFormat(name string, format strfmt.Format, validator strfmt.Validator) {
 	o.formats.Add(name, format, validator)
 }
 
-// Validate validates the registrations in the UASVCAPI
-func (o *UASVCAPI) Validate() error {
+// Validate validates the registrations in the SuaveAPI
+func (o *SuaveAPI) Validate() error {
 	var unregistered []string
 
 	if o.JSONConsumer == nil {
@@ -188,23 +188,23 @@ func (o *UASVCAPI) Validate() error {
 }
 
 // ServeErrorFor gets a error handler for a given operation id
-func (o *UASVCAPI) ServeErrorFor(operationID string) func(http.ResponseWriter, *http.Request, error) {
+func (o *SuaveAPI) ServeErrorFor(operationID string) func(http.ResponseWriter, *http.Request, error) {
 	return o.ServeError
 }
 
 // AuthenticatorsFor gets the authenticators for the specified security schemes
-func (o *UASVCAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]runtime.Authenticator {
+func (o *SuaveAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]runtime.Authenticator {
 	return nil
 }
 
 // Authorizer returns the registered authorizer
-func (o *UASVCAPI) Authorizer() runtime.Authorizer {
+func (o *SuaveAPI) Authorizer() runtime.Authorizer {
 	return nil
 }
 
 // ConsumersFor gets the consumers for the specified media types.
 // MIME type parameters are ignored here.
-func (o *UASVCAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer {
+func (o *SuaveAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer {
 	result := make(map[string]runtime.Consumer, len(mediaTypes))
 	for _, mt := range mediaTypes {
 		switch mt {
@@ -221,7 +221,7 @@ func (o *UASVCAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer
 
 // ProducersFor gets the producers for the specified media types.
 // MIME type parameters are ignored here.
-func (o *UASVCAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer {
+func (o *SuaveAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer {
 	result := make(map[string]runtime.Producer, len(mediaTypes))
 	for _, mt := range mediaTypes {
 		switch mt {
@@ -237,7 +237,7 @@ func (o *UASVCAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer
 }
 
 // HandlerFor gets a http.Handler for the provided operation method and path
-func (o *UASVCAPI) HandlerFor(method, path string) (http.Handler, bool) {
+func (o *SuaveAPI) HandlerFor(method, path string) (http.Handler, bool) {
 	if o.handlers == nil {
 		return nil, false
 	}
@@ -252,8 +252,8 @@ func (o *UASVCAPI) HandlerFor(method, path string) (http.Handler, bool) {
 	return h, ok
 }
 
-// Context returns the middleware context for the u a s v c API
-func (o *UASVCAPI) Context() *middleware.Context {
+// Context returns the middleware context for the suave API
+func (o *SuaveAPI) Context() *middleware.Context {
 	if o.context == nil {
 		o.context = middleware.NewRoutableContext(o.spec, o, nil)
 	}
@@ -261,7 +261,7 @@ func (o *UASVCAPI) Context() *middleware.Context {
 	return o.context
 }
 
-func (o *UASVCAPI) initHandlerCache() {
+func (o *SuaveAPI) initHandlerCache() {
 	o.Context() // don't care about the result, just that the initialization happened
 	if o.handlers == nil {
 		o.handlers = make(map[string]map[string]http.Handler)
@@ -283,7 +283,7 @@ func (o *UASVCAPI) initHandlerCache() {
 
 // Serve creates a http handler to serve the API over HTTP
 // can be used directly in http.ListenAndServe(":8000", api.Serve(nil))
-func (o *UASVCAPI) Serve(builder middleware.Builder) http.Handler {
+func (o *SuaveAPI) Serve(builder middleware.Builder) http.Handler {
 	o.Init()
 
 	if o.Middleware != nil {
@@ -296,24 +296,24 @@ func (o *UASVCAPI) Serve(builder middleware.Builder) http.Handler {
 }
 
 // Init allows you to just initialize the handler cache, you can then recompose the middleware as you see fit
-func (o *UASVCAPI) Init() {
+func (o *SuaveAPI) Init() {
 	if len(o.handlers) == 0 {
 		o.initHandlerCache()
 	}
 }
 
 // RegisterConsumer allows you to add (or override) a consumer for a media type.
-func (o *UASVCAPI) RegisterConsumer(mediaType string, consumer runtime.Consumer) {
+func (o *SuaveAPI) RegisterConsumer(mediaType string, consumer runtime.Consumer) {
 	o.customConsumers[mediaType] = consumer
 }
 
 // RegisterProducer allows you to add (or override) a producer for a media type.
-func (o *UASVCAPI) RegisterProducer(mediaType string, producer runtime.Producer) {
+func (o *SuaveAPI) RegisterProducer(mediaType string, producer runtime.Producer) {
 	o.customProducers[mediaType] = producer
 }
 
 // AddMiddlewareFor adds a http middleware to existing handler
-func (o *UASVCAPI) AddMiddlewareFor(method, path string, builder middleware.Builder) {
+func (o *SuaveAPI) AddMiddlewareFor(method, path string, builder middleware.Builder) {
 	um := strings.ToUpper(method)
 	if path == "/" {
 		path = ""
