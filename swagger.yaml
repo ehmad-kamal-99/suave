@@ -1,0 +1,102 @@
+swagger: "2.0"
+
+info:
+  version: "1.0.0"
+  title: "Suave"
+
+basePath: "/v1"
+host: "localhost:8080"
+
+schemes:
+  - "http"
+
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+
+paths:
+  /username:
+    post:
+      description: "add username"
+      operationId: "addUsername"
+      parameters:
+        - in: "body"
+          name: "username"
+          description: "username to add"
+          required: true
+          schema:
+            type: "object"
+            required:
+              - username
+            properties:
+              username:
+                type: "string"
+                minLength: 1
+      responses:
+        201:
+          description: "username added"
+          schema:
+            type: "object"
+            required:
+              - username
+            properties:
+              username:
+                type: "string"
+        409:
+          description: "username already exists"
+        500:
+          description: "internal server error"
+
+  /username/availability:
+    get:
+      description: "check username"
+      operationId: "getUsername"
+      parameters:
+        - in: "query"
+          type: "string"
+          name: "username"
+          required: true
+          description: "username to check"
+      responses:
+        200:
+          description: "user retrieved"
+          schema:
+            $ref: "#/definitions/availability"
+        500:
+          description: "internal server error"
+
+  /health:
+    get:
+      description: "check health of service"
+      operationId: "getHealth"
+      responses:
+        200:
+          description: "health status of service"
+          schema:
+            $ref: "#/definitions/health"
+
+definitions:
+
+  availability:
+    type: "object"
+    required:
+      - username
+      - exists
+    properties:
+      username:
+        type: "string"
+      exists:
+        type: "boolean"
+
+  health:
+    type: "object"
+    required:
+      - status
+    properties:
+      status:
+        type: "string"
+      main:
+        type: "string"
+      data_store:
+        type: "string"

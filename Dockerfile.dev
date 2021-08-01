@@ -1,0 +1,23 @@
+FROM golang:1.16.5
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        gettext-base \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV GO111MODULE=on
+
+RUN CGO_ENABLED=0
+
+ARG DEVELOPER
+
+RUN apt-get -y update && apt-get -y install jq curl
+
+RUN download_url=$(curl -s https://api.github.com/repos/go-swagger/go-swagger/releases/latest | \
+      jq -r '.assets[] | select(.name | contains("'"$(uname | tr '[:upper:]' '[:lower:]')"'_amd64")) | .browser_download_url') \
+      && curl -o /usr/local/bin/swagger -L'#' "$download_url" \
+      && chmod +x /usr/local/bin/swagger
+
+RUN go get github.com/golangci/golangci-lint/cmd/golangci-lint \
+    && go get golang.org/x/tools/cmd/goimports
+
+WORKDIR /suave/src/github.com/ehmad-kamal-99/suave
